@@ -1,0 +1,48 @@
+#define dist 0
+#define LBlanco 2
+#define LVerde1 3
+#define LVerde2 4
+#define LRojo 5
+
+void setup() {
+  // // Comunicación seria a 9600 baudios
+  Serial.begin(9600);
+  pinMode(LBlanco, OUTPUT);
+  pinMode(LVerde1, OUTPUT);
+  pinMode(LVerde2, OUTPUT);
+  pinMode(LRojo, OUTPUT);
+  
+}
+
+
+void loop() {
+  // Leemos el promedio de la entrada analógica 0 
+  int ADC_1=prom(1);
+  delay(40);
+  Serial.println(ADC_1);
+  //delay(250);
+
+  if(ADC_1>360){ //distancia>13,7cm= todavia no empezó en RCP
+    digitalWrite(LBlanco,1);
+    }
+   if(ADC_1<470 && ADC_1>446){//distancia=11,1cm = Poca profundidad, se prende a los 2cm de profundidad
+    digitalWrite(LVerde1,1);
+    } 
+  if(ADC_1<547 && ADC_1>530){//distancia=8,7cm = Produndidad deseada, se prende a los 5cm de profundidad 
+    digitalWrite(LVerde2,1);
+    }
+  if(ADC_1>600){ //distancia<7,7cm = Demasiada profundidad, se prende a partir de los 6cm de profundidad
+    digitalWrite(LRojo,1);
+    }    
+  
+}
+
+/*int prom(int n)
+{
+  long suma=0;
+  for(int i=0;i<n;i++)
+  {
+    suma=suma+analogRead(A0);
+  }  
+  return(suma/n);
+}*/
